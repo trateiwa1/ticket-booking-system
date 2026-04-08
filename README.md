@@ -5,6 +5,8 @@
 
 - Tech Stack
 
+- Project Architecture
+
 - Getting Started
 
 - API Documentation
@@ -56,6 +58,36 @@
 | Swagger/OpenAPI | 3.0.2 |
 | Docker | Latest |
 | Swagger/OpenAPI	| 3.0.2 |
+
+## Project Architecture
+
+The project follows a layered architecture:
+```
+Controller Layer
+       ↓
+ Service Layer
+       ↓
+Repository Layer
+       ↓
+    Database
+```
+### Structure
+```
+src/main/java/com/example/ticketbookingsystem/
+├── config/        → Security & OpenAPI configuration
+├── controller/    → REST API endpoints
+├── dto/           → Request/Response objects
+├── enums/         → Application enums
+├── exception/     → Global exception handling
+├── mapper/        → Entity-DTO mappers
+├── model/         → JPA entities
+├── repository/    → Spring Data repositories
+├── security/      → JWT authentication & filters
+└── service/       → Business logic
+
+src/test/java/com/example/ticketbookingsystem/
+└── service/       → Unit tests for service layer
+```
 
 ## Getting Started
 ### Prerequisites
@@ -139,4 +171,65 @@ After logging in, click **Authorize** (top-right corner of Swagger UI), paste yo
 Bearer your_token_here
 ```
 Click **Authorize**, then close. You can now access protected endpoints.
+
+## API Endpoints
+
+### Authentication
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/auth/register` | Register new user |
+| POST | `/auth/login` | Login and get JWT token |
+
+### Events
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/events` | Get all events  |
+| GET | `/events/me` | Get my events |
+| GET | `/events/{eventId}` | Get event by ID |
+| POST | `/events` | Create new event |
+| PATCH | `/events/{eventId}` | Update event |
+| DELETE | `/events/{eventId}` | Delete event |
+
+### Venues
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/venues` | Get all venues |
+| GET | `/venues/{venueId}` | Get venue by ID |
+| POST | `/venues` | Create venue |
+
+### Tickets
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/events/{eventId}/tickets` | Get all tickets for event |
+| GET | `/events/{eventId}/tickets/available` | Get available tickets |
+| POST | `/tickets` | Generate ticket |
+
+### Bookings
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/bookings` | Get my bookings |
+| GET | `/bookings/{bookingId}` | Get booking by ID |
+| POST | `/bookings` | Create booking |
+| DELETE | `/bookings/{bookingId}` | Cancel booking |
+
+### Payments
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/payments` | Get all payments |
+| POST | `/payments` | Process payment |
+
+### Users
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/users/me` | Get my profile |
+| GET | `/users/me/bookings` | Get my bookings |
+| PUT | `/users/me` | Update my profile |
+| PUT | `/users/{userId}` | Update user profile |
 
