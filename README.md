@@ -54,5 +54,48 @@
 | Maven | 4.0.0 |
 | Docker | Latest |
 | Swagger/OpenAPI | 3.0.2 |
-Docker | Latest
-Swagger/OpenAPI	| 3.0.2
+| Docker | Latest |
+| Swagger/OpenAPI	| 3.0.2 |
+
+## Getting Started
+### Prerequisites
+- Java 21 or higher
+- Maven
+- Docker (optional)
+
+### Option 1: Run Locally
+```
+git clone https://github.com/trateiwa1/ticket-booking-system.git
+
+cd ticket-booking-system
+
+mvn clean package
+
+mvn spring-boot:run
+```
+
+### Option 2: Run with Docker
+```
+mvn clean package
+
+docker build -t ticket-booking-system .
+
+docker run -p 8080:8080 ticket-booking-system
+```
+The application will start at http://localhost:8080
+
+## API Documentation
+
+Once running, access the API documentation:
+
+- Swagger UI: http://localhost:8080/swagger-ui/index.html
+
+- API Docs: http://localhost:8080/api-docs
+
+- H2 Database Console: http://localhost:8080/h2-console
+
+  JDBC URL: jdbc:h2:mem:tbsdb
+
+  Username: sa
+
+  Password: (leave empty)
