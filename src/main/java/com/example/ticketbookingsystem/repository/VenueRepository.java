@@ -1,0 +1,9 @@
+package com.example.ticketbookingsystem.repository;
+
+import com.example.ticketbookingsystem.model.Venue;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface VenueRepository extends JpaRepository<Venue, Long> {
+}
