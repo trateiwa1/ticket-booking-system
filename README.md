@@ -233,3 +233,26 @@ Click **Authorize**, then close. You can now access protected endpoints.
 | PUT | `/users/me` | Update my profile |
 | PUT | `/users/{userId}` | Update user profile |
 
+## Testing
+Includes Spring Security tests and Mockito unit tests.
+Run unit tests with Maven:
+```
+mvn test
+```
+Unit tests cover core business logic for the following services:
+
+- BookingService – Booking creation and validation
+- EventService – Event creation and validation
+- PaymentService – Payment processing and failure scenarios
+- TicketService – Ticket generation and authorization
+- VenueService – Venue creation and retrieval
+
+## Author
+#### Takundanashe Rateiwa
+
+Computer Engineering Student | Vistula University
+
+GitHub: [@trateiwa1](https://github.com/trateiwa1)
+
+## License
+This project is open-source and available for educational and portfolio purposes.
