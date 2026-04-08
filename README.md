@@ -93,9 +93,50 @@ Once running, access the API documentation:
 - API Docs: http://localhost:8080/api-docs
 
 - H2 Database Console: http://localhost:8080/h2-console
-
+- 
   JDBC URL: jdbc:h2:mem:tbsdb
 
   Username: sa
 
   Password: (leave empty)
+
+## Authentication
+All endpoints except /auth/register and /auth/login require a JWT token.
+
+### Register a new user
+```
+{
+  "email": "user@example.com",
+  "name": "Test User",
+  "password": "Password123",
+  "role": "USER"
+}
+```
+##### Available roles: USER, ORGANIZER
+##### Note: ADMIN role cannot be created through registration for security reasons.
+
+### Login
+```
+POST /auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "Password123"
+}
+```
+#### Response:
+```
+{
+  "id": 1,
+  "token": "eyJhbGciOiJIUzI1NiIs...",
+  "email": "user@example.com",
+  "role": "USER"
+}
+```
+After logging in, click **Authorize** (top-right corner of Swagger UI), paste your token in the following format:
+```
+Bearer your_token_here
+```
+Click **Authorize**, then close. You can now access protected endpoints.
+
