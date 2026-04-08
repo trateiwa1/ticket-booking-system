@@ -41,7 +41,7 @@
 
 - API Documentation (Interactive Swagger UI for testing)
 
-- Docker Support (Containerized application for easy deployment)
+- Docker Support (Containerized deployment)
 
 ## Tech Stack
 
