@@ -6,7 +6,7 @@ import com.example.ticketbookingsystem.exception.ResourceNotFoundException;
 import com.example.ticketbookingsystem.mapper.VenueMapper;
 import com.example.ticketbookingsystem.model.Venue;
 import com.example.ticketbookingsystem.repository.VenueRepository;
-import com.example.ticketbookingsystem.security.AuthenticationHelper;
+import com.example.ticketbookingsystem.security.SecurityContextService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class VenueServiceTest {
     @Mock
     private VenueMapper venueMapper;
     @Mock
-    private AuthenticationHelper authenticationHelper;
+    private SecurityContextService securityContextService;
 
     @InjectMocks
     private VenueService venueService;
@@ -45,7 +45,7 @@ public class VenueServiceTest {
     void createVenue_Success() {
         CreateVenueRequest request = new CreateVenueRequest("AT&T Arena", "San Antonio, TX", "Address", 5000);
 
-        doNothing().when(authenticationHelper).requireAdminOrOrganizer();
+        doNothing().when(securityContextService).requireAdminOrOrganizer();
 
         when(venueMapper.mapToVenue(request)).thenReturn(venue);
 
@@ -60,7 +60,7 @@ public class VenueServiceTest {
 
     @Test
     void getVenue_notFound() {
-        doNothing().when(authenticationHelper).requireAdminOrOrganizerOrUser();
+        doNothing().when(securityContextService).requireAdminOrOrganizerOrUser();
 
         when(venueRepository.findById(1L)).thenReturn(Optional.empty());
 

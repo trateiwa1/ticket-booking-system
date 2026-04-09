@@ -10,7 +10,7 @@ import com.example.ticketbookingsystem.model.Event;
 import com.example.ticketbookingsystem.model.Ticket;
 import com.example.ticketbookingsystem.repository.EventRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
-import com.example.ticketbookingsystem.security.AuthenticationHelper;
+import com.example.ticketbookingsystem.security.SecurityContextService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,23 +21,23 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final EventRepository eventRepository;
     private final TicketMapper ticketMapper;
-    private final AuthenticationHelper authenticationHelper;
+    private final SecurityContextService securityContextService;
 
-    public TicketService(TicketRepository ticketRepository, EventRepository eventRepository, TicketMapper ticketMapper, AuthenticationHelper authenticationHelper){
+    public TicketService(TicketRepository ticketRepository, EventRepository eventRepository, TicketMapper ticketMapper, SecurityContextService securityContextService){
         this.ticketRepository = ticketRepository;
         this.eventRepository = eventRepository;
         this.ticketMapper = ticketMapper;
-        this.authenticationHelper = authenticationHelper;
+        this.securityContextService = securityContextService;
     }
 
     public TicketResponse generateTicket(CreateTicketRequest request){
 
-        authenticationHelper.requireAdminOrOrganizer();
+        securityContextService.requireAdminOrOrganizer();
 
         Event event = eventRepository.findById(request.getEventId())
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
-        if(!authenticationHelper.isAdmin() && !event.getOwner().getId().equals(authenticationHelper.getCurrentUser().getId())){
+        if(!securityContextService.isAdmin() && !event.getOwner().getId().equals(securityContextService.getCurrentUser().getId())){
             throw new UnauthorizedActionException("You can only generate tickets for your own event");
         }
 
@@ -50,7 +50,7 @@ public class TicketService {
 
     public Page<TicketResponse> viewAvailableTickets(Long eventId, Pageable pageable){
 
-        authenticationHelper.requireAdminOrOrganizerOrUser();
+        securityContextService.requireAdminOrOrganizerOrUser();
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
@@ -63,7 +63,7 @@ public class TicketService {
 
     public Page<TicketResponse> viewTicketsByEvent(Long eventId, Pageable pageable){
 
-        authenticationHelper.requireAdminOrOrganizerOrUser();
+        securityContextService.requireAdminOrOrganizerOrUser();
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));

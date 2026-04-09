@@ -15,7 +15,7 @@ import com.example.ticketbookingsystem.model.Ticket;
 import com.example.ticketbookingsystem.model.User;
 import com.example.ticketbookingsystem.repository.BookingRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
-import com.example.ticketbookingsystem.security.AuthenticationHelper;
+import com.example.ticketbookingsystem.security.SecurityContextService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ public class BookingServiceTest {
 
     @Mock private BookingRepository bookingRepository;
     @Mock private TicketRepository ticketRepository;
-    @Mock private AuthenticationHelper authenticationHelper;
+    @Mock private SecurityContextService securityContextService;
     @Mock private BookingMapper bookingMapper;
 
     @InjectMocks
@@ -63,8 +63,8 @@ public class BookingServiceTest {
     void createBooking_success() {
         CreateBookingRequest request = new CreateBookingRequest(List.of(1L));
 
-        doNothing().when(authenticationHelper).requireAdminOrUser();
-        when(authenticationHelper.getCurrentUser()).thenReturn(user);
+        doNothing().when(securityContextService).requireAdminOrUser();
+        when(securityContextService.getCurrentUser()).thenReturn(user);
 
         Booking booking = new Booking(BookingStatus.PENDING);
 
@@ -85,8 +85,8 @@ public class BookingServiceTest {
     void createBooking_ticketNotFound() {
         CreateBookingRequest request = new CreateBookingRequest(List.of(1L, 2L));
 
-        doNothing().when(authenticationHelper).requireAdminOrUser();
-        when(authenticationHelper.getCurrentUser()).thenReturn(user);
+        doNothing().when(securityContextService).requireAdminOrUser();
+        when(securityContextService.getCurrentUser()).thenReturn(user);
 
         when(bookingMapper.mapToBooking(request)).thenReturn(new Booking());
         when(ticketRepository.findAllById(any())).thenReturn(List.of(ticket));
@@ -101,8 +101,8 @@ public class BookingServiceTest {
 
         CreateBookingRequest request = new CreateBookingRequest(List.of(1L));
 
-        doNothing().when(authenticationHelper).requireAdminOrUser();
-        when(authenticationHelper.getCurrentUser()).thenReturn(user);
+        doNothing().when(securityContextService).requireAdminOrUser();
+        when(securityContextService.getCurrentUser()).thenReturn(user);
 
         when(bookingMapper.mapToBooking(request)).thenReturn(new Booking());
         when(ticketRepository.findAllById(any())).thenReturn(List.of(ticket));

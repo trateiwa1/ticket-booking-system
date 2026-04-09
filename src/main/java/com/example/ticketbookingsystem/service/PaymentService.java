@@ -15,7 +15,7 @@ import com.example.ticketbookingsystem.model.Ticket;
 import com.example.ticketbookingsystem.repository.BookingRepository;
 import com.example.ticketbookingsystem.repository.PaymentRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
-import com.example.ticketbookingsystem.security.AuthenticationHelper;
+import com.example.ticketbookingsystem.security.SecurityContextService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,25 +29,25 @@ public class PaymentService {
     private final TicketRepository ticketRepository;
     private final BookingRepository bookingRepository;
     private final PaymentMapper paymentMapper;
-    private final AuthenticationHelper authenticationHelper;
+    private final SecurityContextService securityContextService;
 
-    public PaymentService(PaymentRepository paymentRepository, TicketRepository ticketRepository, BookingRepository bookingRepository, PaymentMapper paymentMapper, AuthenticationHelper authenticationHelper){
+    public PaymentService(PaymentRepository paymentRepository, TicketRepository ticketRepository, BookingRepository bookingRepository, PaymentMapper paymentMapper, SecurityContextService securityContextService){
         this.paymentRepository = paymentRepository;
         this.ticketRepository = ticketRepository;
         this.bookingRepository = bookingRepository;
         this.paymentMapper = paymentMapper;
-        this.authenticationHelper = authenticationHelper;
+        this.securityContextService = securityContextService;
     }
 
     @Transactional
     public PaymentResponse processPayment(PaymentRequest request){
 
-        authenticationHelper.requireAdminOrUser();
+        securityContextService.requireAdminOrUser();
 
         Booking booking = bookingRepository.findById(request.getBookingId())
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
 
-        if (!authenticationHelper.isAdmin() && !booking.getOwner().getId().equals(authenticationHelper.getCurrentUser().getId())) {
+        if (!securityContextService.isAdmin() && !booking.getOwner().getId().equals(securityContextService.getCurrentUser().getId())) {
             throw new UnauthorizedActionException("You can only pay for your own booking");
         }
 
@@ -90,7 +90,7 @@ public class PaymentService {
 
     public Page<PaymentResponse> viewAllPayments(Pageable pageable){
 
-        authenticationHelper.requireAdmin();
+        securityContextService.requireAdmin();
 
         Page<Payment> paymentPage = paymentRepository.findAll(pageable);
 

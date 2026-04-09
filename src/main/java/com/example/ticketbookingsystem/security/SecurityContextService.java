@@ -9,11 +9,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationHelper {
+public class SecurityContextService {
 
     private final UserRepository userRepository;
 
-    public AuthenticationHelper(UserRepository userRepository) {
+    public SecurityContextService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

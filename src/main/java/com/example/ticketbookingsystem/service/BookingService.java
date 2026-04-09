@@ -13,7 +13,7 @@ import com.example.ticketbookingsystem.model.Event;
 import com.example.ticketbookingsystem.model.Ticket;
 import com.example.ticketbookingsystem.repository.BookingRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
-import com.example.ticketbookingsystem.security.AuthenticationHelper;
+import com.example.ticketbookingsystem.security.SecurityContextService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,22 +27,22 @@ public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final TicketRepository ticketRepository;
-    private final AuthenticationHelper authenticationHelper;
+    private final SecurityContextService securityContextService;
     private final BookingMapper bookingMapper;
 
-    public BookingService(BookingRepository bookingRepository, TicketRepository ticketRepository, AuthenticationHelper authenticationHelper, BookingMapper bookingMapper) {
+    public BookingService(BookingRepository bookingRepository, TicketRepository ticketRepository, SecurityContextService securityContextService, BookingMapper bookingMapper) {
         this.bookingRepository = bookingRepository;
         this.ticketRepository = ticketRepository;
-        this.authenticationHelper = authenticationHelper;
+        this.securityContextService = securityContextService;
         this.bookingMapper = bookingMapper;
     }
 
     @Transactional
     public BookingResponse createBooking(CreateBookingRequest request) {
 
-        authenticationHelper.requireAdminOrUser();
+        securityContextService.requireAdminOrUser();
         Booking booking = bookingMapper.mapToBooking(request);
-        booking.setOwner(authenticationHelper.getCurrentUser());
+        booking.setOwner(securityContextService.getCurrentUser());
 
         List<Ticket> tickets = ticketRepository.findAllById(request.getTicketIds());
 
@@ -80,9 +80,9 @@ public class BookingService {
 
     public Page<BookingResponse> viewMyBookings(Pageable pageable) {
 
-        authenticationHelper.requireAdminOrUser();
+        securityContextService.requireAdminOrUser();
 
-        Page<Booking> bookingPage = bookingRepository.findByOwner(authenticationHelper.getCurrentUser(), pageable);
+        Page<Booking> bookingPage = bookingRepository.findByOwner(securityContextService.getCurrentUser(), pageable);
 
         return bookingPage.map(bookingMapper::mapToResponse);
 
@@ -90,12 +90,12 @@ public class BookingService {
 
     public BookingResponse getBooking(Long bookingId) {
 
-        authenticationHelper.requireAdminOrUser();
+        securityContextService.requireAdminOrUser();
 
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
 
-        if (!authenticationHelper.isAdmin() && !booking.getOwner().getId().equals(authenticationHelper.getCurrentUser().getId())) {
+        if (!securityContextService.isAdmin() && !booking.getOwner().getId().equals(securityContextService.getCurrentUser().getId())) {
             throw new UnauthorizedActionException("Action denied: you can only view your own bookings");
         }
 
@@ -105,12 +105,12 @@ public class BookingService {
     @Transactional
     public void cancelBooking(Long bookingId){
 
-        authenticationHelper.requireAdminOrUser();
+        securityContextService.requireAdminOrUser();
 
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
 
-        if(!authenticationHelper.isAdmin() && !booking.getOwner().getId().equals(authenticationHelper.getCurrentUser().getId())){
+        if(!securityContextService.isAdmin() && !booking.getOwner().getId().equals(securityContextService.getCurrentUser().getId())){
             throw new UnauthorizedActionException("Action denied: you can only cancel your own bookings");
         }
 

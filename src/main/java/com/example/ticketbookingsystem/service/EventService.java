@@ -14,7 +14,7 @@ import com.example.ticketbookingsystem.model.Venue;
 import com.example.ticketbookingsystem.repository.EventRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
 import com.example.ticketbookingsystem.repository.VenueRepository;
-import com.example.ticketbookingsystem.security.AuthenticationHelper;
+import com.example.ticketbookingsystem.security.SecurityContextService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,20 +28,20 @@ public class EventService {
     private final EventRepository eventRepository;
     private final VenueRepository venueRepository;
     private final TicketRepository ticketRepository;
-    private final AuthenticationHelper authenticationHelper;
+    private final SecurityContextService securityContextService;
     private final EventMapper eventMapper;
 
-    public EventService(EventRepository eventRepository, VenueRepository venueRepository, TicketRepository ticketRepository, AuthenticationHelper authenticationHelper, EventMapper eventMapper){
+    public EventService(EventRepository eventRepository, VenueRepository venueRepository, TicketRepository ticketRepository, SecurityContextService securityContextService, EventMapper eventMapper){
         this.eventRepository = eventRepository;
         this.venueRepository = venueRepository;
         this.ticketRepository = ticketRepository;
-        this.authenticationHelper = authenticationHelper;
+        this.securityContextService = securityContextService;
         this.eventMapper = eventMapper;
     }
 
     public EventResponse createEvent(CreateEventRequest request){
 
-        authenticationHelper.requireAdminOrOrganizer();
+        securityContextService.requireAdminOrOrganizer();
 
         Venue venue = venueRepository.findById(request.getVenueId())
                 .orElseThrow(() -> new ResourceNotFoundException("Venue not found"));
@@ -56,7 +56,7 @@ public class EventService {
         }
 
             Event event = eventMapper.mapToEvent(request, venue);
-            event.setOwner(authenticationHelper.getCurrentUser());
+            event.setOwner(securityContextService.getCurrentUser());
 
             eventRepository.save(event);
 
@@ -64,20 +64,20 @@ public class EventService {
     }
 
     public Page<EventResponse> getEvents(Pageable pageable){
-        authenticationHelper.requireAdminOrOrganizerOrUser();
+        securityContextService.requireAdminOrOrganizerOrUser();
         Page<Event> eventPage = eventRepository.findAll(pageable);
         return eventPage.map(eventMapper::mapToResponse);
     }
 
     public Page<EventResponse> getMyEvents(Pageable pageable){
-        authenticationHelper.requireAdminOrOrganizer();
-        Page<Event> eventPage = eventRepository.findByOwner(authenticationHelper.getCurrentUser(), pageable);
+        securityContextService.requireAdminOrOrganizer();
+        Page<Event> eventPage = eventRepository.findByOwner(securityContextService.getCurrentUser(), pageable);
         return eventPage.map(eventMapper::mapToResponse);
     }
 
     public EventResponse getEvent(Long eventId){
 
-        authenticationHelper.requireAdminOrOrganizerOrUser();
+        securityContextService.requireAdminOrOrganizerOrUser();
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
@@ -87,12 +87,12 @@ public class EventService {
 
     public EventResponse updateEvent(Long eventId, UpdateEventRequest request){
 
-        authenticationHelper.requireAdminOrOrganizer();
+        securityContextService.requireAdminOrOrganizer();
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
-        if(!authenticationHelper.isAdmin() && !event.getOwner().getId().equals(authenticationHelper.getCurrentUser().getId())){
+        if(!securityContextService.isAdmin() && !event.getOwner().getId().equals(securityContextService.getCurrentUser().getId())){
             throw new UnauthorizedActionException("Access denied: you can only update your own events");
         }
 
@@ -121,13 +121,13 @@ public class EventService {
     @Transactional
     public void deleteEvent(Long eventId){
 
-        authenticationHelper.requireAdminOrOrganizer();
+        securityContextService.requireAdminOrOrganizer();
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
-        if(!authenticationHelper.isAdmin() &&
-                !event.getOwner().getId().equals(authenticationHelper.getCurrentUser().getId())){
+        if(!securityContextService.isAdmin() &&
+                !event.getOwner().getId().equals(securityContextService.getCurrentUser().getId())){
             throw new UnauthorizedActionException("Action denied: you can only delete your own events");
         }
 

@@ -13,7 +13,7 @@ import com.example.ticketbookingsystem.model.Ticket;
 import com.example.ticketbookingsystem.model.User;
 import com.example.ticketbookingsystem.repository.EventRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
-import com.example.ticketbookingsystem.security.AuthenticationHelper;
+import com.example.ticketbookingsystem.security.SecurityContextService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ public class TicketServiceTest {
     @Mock private TicketRepository ticketRepository;
     @Mock private EventRepository eventRepository;
     @Mock private TicketMapper ticketMapper;
-    @Mock private AuthenticationHelper authenticationHelper;
+    @Mock private SecurityContextService securityContextService;
 
     @InjectMocks
     private TicketService ticketService;
@@ -61,8 +61,8 @@ public class TicketServiceTest {
 
     @Test
     void generateTicket_success() {
-        doNothing().when(authenticationHelper).requireAdminOrOrganizer();
-        when(authenticationHelper.isAdmin()).thenReturn(true);
+        doNothing().when(securityContextService).requireAdminOrOrganizer();
+        when(securityContextService.isAdmin()).thenReturn(true);
 
         when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
         when(ticketMapper.mapToTicket(request, event)).thenReturn(ticket);
@@ -78,7 +78,7 @@ public class TicketServiceTest {
 
     @Test
     void generateTicket_eventNotFound() {
-        doNothing().when(authenticationHelper).requireAdminOrOrganizer();
+        doNothing().when(securityContextService).requireAdminOrOrganizer();
         when(eventRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class,
@@ -90,9 +90,9 @@ public class TicketServiceTest {
         User other = new User("Tom", "tom@test.com", "Password", UserRole.ORGANIZER);
         other.setId(2L);
 
-        doNothing().when(authenticationHelper).requireAdminOrOrganizer();
-        when(authenticationHelper.isAdmin()).thenReturn(false);
-        when(authenticationHelper.getCurrentUser()).thenReturn(other);
+        doNothing().when(securityContextService).requireAdminOrOrganizer();
+        when(securityContextService.isAdmin()).thenReturn(false);
+        when(securityContextService.getCurrentUser()).thenReturn(other);
 
         when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
 

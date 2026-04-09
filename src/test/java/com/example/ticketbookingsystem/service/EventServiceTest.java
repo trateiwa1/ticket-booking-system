@@ -2,18 +2,16 @@ package com.example.ticketbookingsystem.service;
 
 import com.example.ticketbookingsystem.dto.CreateEventRequest;
 import com.example.ticketbookingsystem.dto.EventResponse;
-import com.example.ticketbookingsystem.dto.UpdateEventRequest;
 import com.example.ticketbookingsystem.enums.EventCategory;
 import com.example.ticketbookingsystem.enums.UserRole;
 import com.example.ticketbookingsystem.exception.ResourceNotFoundException;
-import com.example.ticketbookingsystem.exception.UnauthorizedActionException;
 import com.example.ticketbookingsystem.mapper.EventMapper;
 import com.example.ticketbookingsystem.model.Event;
 import com.example.ticketbookingsystem.model.User;
 import com.example.ticketbookingsystem.model.Venue;
 import com.example.ticketbookingsystem.repository.EventRepository;
 import com.example.ticketbookingsystem.repository.VenueRepository;
-import com.example.ticketbookingsystem.security.AuthenticationHelper;
+import com.example.ticketbookingsystem.security.SecurityContextService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +32,7 @@ public class EventServiceTest {
 
     @Mock private EventRepository eventRepository;
     @Mock private VenueRepository venueRepository;
-    @Mock private AuthenticationHelper authenticationHelper;
+    @Mock private SecurityContextService securityContextService;
     @Mock private EventMapper eventMapper;
 
     @InjectMocks
@@ -63,8 +61,8 @@ public class EventServiceTest {
                 EventCategory.SPORTS, 2500, 1L, LocalDateTime.now(), LocalDateTime.now().plusHours(2)
         );
 
-        doNothing().when(authenticationHelper).requireAdminOrOrganizer();
-        when(authenticationHelper.getCurrentUser()).thenReturn(owner);
+        doNothing().when(securityContextService).requireAdminOrOrganizer();
+        when(securityContextService.getCurrentUser()).thenReturn(owner);
 
         when(venueRepository.findById(1L)).thenReturn(Optional.of(venue));
         when(eventMapper.mapToEvent(request, venue)).thenReturn(event);
@@ -85,7 +83,7 @@ public class EventServiceTest {
                 1L, LocalDateTime.now(), LocalDateTime.now()
         );
 
-        doNothing().when(authenticationHelper).requireAdminOrOrganizer();
+        doNothing().when(securityContextService).requireAdminOrOrganizer();
         when(venueRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class,

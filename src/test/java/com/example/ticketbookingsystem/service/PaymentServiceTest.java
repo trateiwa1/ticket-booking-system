@@ -18,7 +18,7 @@ import com.example.ticketbookingsystem.model.User;
 import com.example.ticketbookingsystem.repository.BookingRepository;
 import com.example.ticketbookingsystem.repository.PaymentRepository;
 import com.example.ticketbookingsystem.repository.TicketRepository;
-import com.example.ticketbookingsystem.security.AuthenticationHelper;
+import com.example.ticketbookingsystem.security.SecurityContextService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ public class PaymentServiceTest {
     @Mock private BookingRepository bookingRepository;
     @Mock private TicketRepository ticketRepository;
     @Mock private PaymentMapper paymentMapper;
-    @Mock private AuthenticationHelper authenticationHelper;
+    @Mock private SecurityContextService securityContextService;
 
     @InjectMocks
     private PaymentService paymentService;
@@ -71,9 +71,9 @@ public class PaymentServiceTest {
     void processPayment_successful() {
         PaymentRequest request = new PaymentRequest(1L,100L, PaymentMethod.CREDIT_CARD);
 
-        doNothing().when(authenticationHelper).requireAdminOrUser();
-        when(authenticationHelper.isAdmin()).thenReturn(false);
-        when(authenticationHelper.getCurrentUser()).thenReturn(user);
+        doNothing().when(securityContextService).requireAdminOrUser();
+        when(securityContextService.isAdmin()).thenReturn(false);
+        when(securityContextService.getCurrentUser()).thenReturn(user);
 
         when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
 
@@ -97,7 +97,7 @@ public class PaymentServiceTest {
     void processPayment_bookingNotFound() {
         PaymentRequest request = new PaymentRequest(1L, 100L, PaymentMethod.CREDIT_CARD);
 
-        doNothing().when(authenticationHelper).requireAdminOrUser();
+        doNothing().when(securityContextService).requireAdminOrUser();
         when(bookingRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class,
@@ -108,9 +108,9 @@ public class PaymentServiceTest {
     void processPayment_wrongAmount() {
         PaymentRequest request = new PaymentRequest(1L, 50L, PaymentMethod.CREDIT_CARD);
 
-        doNothing().when(authenticationHelper).requireAdminOrUser();
-        when(authenticationHelper.isAdmin()).thenReturn(false);
-        when(authenticationHelper.getCurrentUser()).thenReturn(user);
+        doNothing().when(securityContextService).requireAdminOrUser();
+        when(securityContextService.isAdmin()).thenReturn(false);
+        when(securityContextService.getCurrentUser()).thenReturn(user);
 
         when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
 
