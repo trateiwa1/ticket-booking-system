@@ -21,8 +21,6 @@
 
 - Project Structure
 
-- Author
-
 ## Features
 
 - User Authentication (JWT-based authentication with role-based access control)
