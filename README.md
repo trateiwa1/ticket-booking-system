@@ -54,7 +54,6 @@
 | Maven | 4.0.0 |
 | Docker | Latest |
 | Swagger/OpenAPI | 3.0.2 |
-| Swagger/OpenAPI	| 3.0.2 |
 
 ## Project Architecture
 
