@@ -76,6 +76,14 @@ public class Booking {
         return createdAt;
     }
 
+    public void setId(Long id){
+        this.id = id;
+    }
+
+    public void setReferenceCode(String referenceCode){
+        this.referenceCode = referenceCode;
+    }
+
     public void setOwner(User owner){
         this.owner = owner;
     }

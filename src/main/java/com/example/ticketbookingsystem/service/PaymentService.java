@@ -70,8 +70,6 @@ public class PaymentService {
                             request.getAmount(), total, booking.getId()));
         }
 
-
-
         for (Ticket ticket : tickets) {
             ticket.setStatus(TicketStatus.SOLD);
         }
@@ -85,15 +83,11 @@ public class PaymentService {
         paymentRepository.save(payment);
 
         return paymentMapper.mapToResponse(payment);
-
     }
 
     public Page<PaymentResponse> viewAllPayments(Pageable pageable){
-
         securityContextService.requireAdmin();
-
         Page<Payment> paymentPage = paymentRepository.findAll(pageable);
-
         return paymentPage.map(paymentMapper::mapToResponse);
     }
 

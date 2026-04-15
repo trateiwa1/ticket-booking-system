@@ -59,7 +59,6 @@ public class EventService {
             event.setOwner(securityContextService.getCurrentUser());
 
             eventRepository.save(event);
-
             return eventMapper.mapToResponse(event);
     }
 
@@ -143,7 +142,4 @@ public class EventService {
         ticketRepository.deleteAll(tickets);
         eventRepository.delete(event);
     }
-
-
-
 }

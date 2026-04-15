@@ -71,6 +71,5 @@ public class TicketService {
         Page<Ticket> ticketPage = ticketRepository.findByEvent(event, pageable);
 
         return ticketPage.map(ticketMapper::mapToResponse);
-
     }
 }

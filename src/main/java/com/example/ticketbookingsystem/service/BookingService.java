@@ -77,7 +77,6 @@ public class BookingService {
         return bookingMapper.mapToResponse(booking);
     }
 
-
     public Page<BookingResponse> viewMyBookings(Pageable pageable) {
 
         securityContextService.requireAdminOrUser();
