@@ -118,8 +118,6 @@ docker run -p 8080:8080 ticket-booking-system
 ```
 The application will start at http://localhost:8080
 
----
-
 
 ## API Documentation
 
