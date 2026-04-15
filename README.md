@@ -247,7 +247,7 @@ Click **Authorize**, then close. You can now access protected endpoints.
 
 ## Testing
 
-This project includes comprehensive **unit tests for the service layer**
+This project includes comprehensive **unit tests for the service layer**, ensuring that all core business logic is thoroughly validated.
 
 ### Testing Approach
 - **JUnit 5** for test structure
@@ -257,7 +257,7 @@ This project includes comprehensive **unit tests for the service layer**
 
 ### Test Coverage
 
-Unit tests are implemented for all major services:
+All major service classes are fully tested:
 
 - **BookingService**
   - Booking creation
