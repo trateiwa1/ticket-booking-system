@@ -7,7 +7,7 @@
 
 - Project Architecture
 
-- Getting Started
+- Getting Started (Run locally/Docker)
 
 - API Documentation
 
@@ -16,10 +16,6 @@
 - API Endpoints
 
 - Testing
-
-- Docker
-
-- Project Structure
 
 ## Features
 
@@ -230,18 +226,60 @@ Click **Authorize**, then close. You can now access protected endpoints.
 | PUT | `/users/{userId}` | Update user profile |
 
 ## Testing
-Includes Spring Security tests and Mockito unit tests.
-Run unit tests with Maven:
+
+This project includes comprehensive **unit tests for the service layer**
+
+### Testing Approach
+- **JUnit 5** for test structure
+- **Mockito** for mocking dependencies
+- Focus on **business logic validation**, not just method execution.
+- Covers both **success and failure scenarios**
+
+### Test Coverage
+
+Unit tests are implemented for all major services:
+
+- **BookingService**
+  - Booking creation
+  - Ticket validation
+  - Booking cancellation
+  - Ownership checks
+
+- **EventService**
+  - Event creation and updates
+  - Venue validation
+  - Capacity constraints
+  - Authorization (organizer/admin)
+
+- **PaymentService**
+  - Successful payment processing
+  - Payment failure scenarios (wrong amount)
+  - Booking ownership validation
+  - Payment status transitions (`PENDING → PAID / FAILED`)
+
+- **TicketService**
+  - Ticket generation
+  - Event ownership validation
+  - Viewing available tickets
+
+- **VenueService**
+  - Venue creation
+  - Venue retrieval
+  - Authorization checks
+
+---
+
+### Running Tests
+
+Run all tests using Maven:
+
+```
+mvn clean install
+```
+or
 ```
 mvn test
 ```
-Unit tests cover core business logic for the following services:
-
-- BookingService – Booking creation and validation
-- EventService – Event creation and validation
-- PaymentService – Payment processing and failure scenarios
-- TicketService – Ticket generation and authorization
-- VenueService – Venue creation and retrieval
 
 ## Author
 #### Takundanashe Rateiwa
