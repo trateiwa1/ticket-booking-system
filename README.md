@@ -118,6 +118,8 @@ docker run -p 8080:8080 ticket-booking-system
 ```
 The application will start at http://localhost:8080
 
+> ⚠️This is a backend REST API - Use Swagger UI to access and test endpoints when the application is running: http://localhost:8080/swagger-ui.html
+
 
 ## API Documentation
 
