@@ -17,6 +17,8 @@
 
 - Testing
 
+---
+
 ## Features
 
 - User Authentication (JWT-based authentication with role-based access control)
@@ -37,6 +39,9 @@
 
 - Docker Support (Containerized deployment)
 
+---
+
+
 ## Tech Stack
 
 | Technology | Version |
@@ -50,6 +55,9 @@
 | Maven | 4.0.0 |
 | Docker | Latest |
 | Swagger/OpenAPI | 3.0.2 |
+
+---
+
 
 ## Project Architecture
 
@@ -81,6 +89,8 @@ src/test/java/com/example/ticketbookingsystem/
 └── service/       → Unit tests for service layer
 ```
 
+---
+
 ## Getting Started
 ### Prerequisites
 - Java 21 or higher
@@ -108,6 +118,9 @@ docker run -p 8080:8080 ticket-booking-system
 ```
 The application will start at http://localhost:8080
 
+---
+
+
 ## API Documentation
 
 Once running, access the API documentation:
@@ -123,6 +136,9 @@ Once running, access the API documentation:
   Username: sa
 
   Password: (leave empty)
+
+---
+
 
 ## Authentication
 All endpoints except /auth/register and /auth/login require a JWT token.
@@ -163,6 +179,8 @@ After logging in, click **Authorize** (top-right corner of Swagger UI), paste yo
 Bearer your_token_here
 ```
 Click **Authorize**, then close. You can now access protected endpoints.
+
+---
 
 ## API Endpoints
 
@@ -225,6 +243,8 @@ Click **Authorize**, then close. You can now access protected endpoints.
 | PUT | `/users/me` | Update my profile |
 | PUT | `/users/{userId}` | Update user profile |
 
+---
+
 ## Testing
 
 This project includes comprehensive **unit tests for the service layer**
@@ -267,8 +287,6 @@ Unit tests are implemented for all major services:
   - Venue retrieval
   - Authorization checks
 
----
-
 ### Running Tests
 
 Run all tests using Maven:
@@ -280,6 +298,7 @@ or
 ```
 mvn test
 ```
+---
 
 ## Author
 #### Takundanashe Rateiwa
