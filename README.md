@@ -284,7 +284,6 @@ All major service classes are fully tested:
   - Venue creation
   - Venue retrieval
   - Authorization checks
-
 ### Running Tests
 
 Run all tests using Maven:
