@@ -44,17 +44,17 @@
 
 ## Tech Stack
 
-| Technology | Version |
-|------------|---------|
-| Java | 21 |
-| Spring Boot | 4.0.3 |
-| Spring Security | 7.0.3 |
-| Spring Data JPA | 4.0.3 |
-| H2 Database | In-memory |
-| JWT | 0.11.5 |
-| Maven | 4.0.0 |
-| Docker | Latest |
-| Swagger/OpenAPI | 3.0.2 |
+| Technology        | Description |
+|------------------|------------|
+| Java 21          | Core programming language |
+| Spring Boot      | Backend framework |
+| Spring Security  | Authentication & authorization |
+| Spring Data JPA  | ORM and database interaction |
+| PostgreSQL       | Production-grade relational database |
+| JWT              | Secure authentication |
+| Maven            | Build tool |
+| Docker           | Containerization |
+| Swagger/OpenAPI  | API documentation |
 
 ---
 
@@ -118,27 +118,19 @@ docker run -p 8080:8080 ticket-booking-system
 ```
 The application will start at http://localhost:8080
 
-**> Note: This is a backend REST API - Use Swagger UI to access and test endpoints when the application is running: http://localhost:8080/swagger-ui/index.html**
+> Note: This is a backend REST API - **Use Swagger UI to access and test endpoints when the application is running: http://localhost:8080/swagger-ui/index.html**
 
 
 ## API Documentation
 
 Once running, access the API documentation:
 
-- Swagger UI: http://localhost:8080/swagger-ui/index.html
+- Swagger UI: http://localhost:8080/swagger-ui/index.html  
+- API Docs: http://localhost:8080/api-docs  
 
-- API Docs: http://localhost:8080/api-docs
-
-- H2 Database Console: http://localhost:8080/h2-console
-- 
-  JDBC URL: jdbc:h2:mem:tbsdb
-
-  Username: sa
-
-  Password: (leave empty)
+> Database is powered by PostgreSQL and can be managed using pgAdmin or any PostgreSQL client.
 
 ---
-
 
 ## Authentication
 All endpoints except /auth/register and /auth/login require a JWT token.
