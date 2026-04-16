@@ -48,12 +48,12 @@
 |------------------|------------|
 | Java 21          | Core programming language |
 | Spring Boot      | Backend framework |
-| Spring Security  | Authentication & authorization |
+| Spring Security  | Authentication & Authorization |
 | Spring Data JPA  | ORM and database interaction |
-| PostgreSQL       | Production-grade relational database |
+| PostgreSQL 16    | Production-grade relational database |
+| Docker           | Containerized database deployment |
 | JWT              | Secure authentication |
 | Maven            | Build tool |
-| Docker           | Containerization |
 | Swagger/OpenAPI  | API documentation |
 
 ---
@@ -92,43 +92,45 @@ src/test/java/com/example/ticketbookingsystem/
 ---
 
 ## Getting Started
-### Prerequisites
-- Java 21 or higher
-- Maven
-- Docker (optional)
 
-### Option 1: Run Locally
+### Prerequisites
+- Java 21+
+- Maven
+- Docker (Optional for PostgreSQL)
+
+1. Clone the repository and change the directory
 ```
-git clone https://github.com/trateiwa1/ticket-booking-system.git
+git clone https://github.com/trateiwa1/ticket-booking-system.git  
 
 cd ticket-booking-system
+```
 
-mvn clean package
+2. Start PostgreSQL (Docker)
+```
+docker run --name postgres-db -e POSTGRES_PASSWORD="Password&123" -e POSTGRES_DB=ticket_booking_db -p 5432:5432 -d postgres:16
+```
+---
 
+3. Run the application
+```
+mvn clean install
+ 
 mvn spring-boot:run
 ```
 
-### Option 2: Run with Docker
-```
-mvn clean package
+> Application will run at:
+http://localhost:8080
 
-docker build -t ticket-booking-system .
-
-docker run -p 8080:8080 ticket-booking-system
-```
-The application will start at http://localhost:8080
-
-> Note: This is a backend REST API - **Use Swagger UI to access and test endpoints when the application is running: http://localhost:8080/swagger-ui/index.html**
-
+> Note: This is a backend REST API - Use Swagger UI to access and test endpoints when the application is running: http://localhost:8080/swagger-ui/index.html
 
 ## API Documentation
 
-Once running, access the API documentation:
+Once running, access:
 
 - Swagger UI: http://localhost:8080/swagger-ui/index.html  
 - API Docs: http://localhost:8080/api-docs  
 
-> Database is powered by PostgreSQL and can be managed using pgAdmin or any PostgreSQL client.
+> The application uses PostgreSQL for data persistence.
 
 ---
 
