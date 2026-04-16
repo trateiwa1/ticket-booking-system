@@ -9,9 +9,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "booking")
+
 public class Booking {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String referenceCode;

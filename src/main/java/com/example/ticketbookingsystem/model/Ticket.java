@@ -5,9 +5,12 @@ import com.example.ticketbookingsystem.enums.TicketType;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "ticket")
+
 public class Ticket {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)

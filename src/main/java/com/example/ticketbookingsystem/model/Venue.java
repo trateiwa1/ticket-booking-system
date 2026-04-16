@@ -3,6 +3,7 @@ package com.example.ticketbookingsystem.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "venue")
 public class Venue {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

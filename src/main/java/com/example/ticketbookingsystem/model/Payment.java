@@ -6,9 +6,12 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "payment")
+
 public class Payment {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "booking_id", nullable = false)
