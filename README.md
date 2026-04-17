@@ -110,28 +110,28 @@ The primary database used in this project is **PostgreSQL 16**.
 ### Requirements
 - Java 21+
 - Maven
-- Docker 
+- Docker
 
-1. Clone the repository and change the directory
+**A) Run the application with Docker**
+
+Clone the repository and change the directory
 ```
 git clone https://github.com/trateiwa1/ticket-booking-system.git  
 
 cd ticket-booking-system
 ```
 
-2. Start PostgreSQL (Docker)
+Start PostgreSQL (Docker)
 ```
 docker run --name postgres-db -e POSTGRES_PASSWORD="Password&123" -e POSTGRES_DB=ticket_booking_db -p 5432:5432 -d postgres:16
 ```
----
-
-3. Run the application
+**B) Run the application locally**
 ```
 mvn clean install
  
 mvn spring-boot:run
 ```
-Application URL
+Application URL:
 ```
 http://localhost:8080
 ```
@@ -152,6 +152,7 @@ Once running, access:
 All endpoints except ```/auth/register``` and ```/auth/login``` require a JWT token.
 
 ### Register a new user
+POST ```/auth/register```
 ```
 {
   "email": "user@example.com",
@@ -160,10 +161,13 @@ All endpoints except ```/auth/register``` and ```/auth/login``` require a JWT to
   "role": "USER"
 }
 ```
-##### Available roles: USER, ORGANIZER
-##### Note: ADMIN role cannot be created through registration for security reasons.
+Available roles:
+- USER
+- ORGANIZER
+- (ADMIN cannot be created via API)
 
 ### Login
+POST ```/auth/login```
 ```
 POST /auth/login
 Content-Type: application/json
@@ -182,11 +186,12 @@ Content-Type: application/json
   "role": "USER"
 }
 ```
-After logging in, click **Authorize** (top-right corner of Swagger UI), paste your token in the following format:
+### Using JWT in Swagger
+
+In order to access protected enpoints after logging in, click **Authorize** (top-right corner of Swagger UI) and paste your token in the following format:
 ```
 Bearer your_token_here
 ```
-Click **Authorize**, then close. You can now access protected endpoints.
 
 ---
 
@@ -196,8 +201,8 @@ Click **Authorize**, then close. You can now access protected endpoints.
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/auth/register` | Register new user |
-| POST | `/auth/login` | Login and get JWT token |
+| POST | `/auth/register` | Register user |
+| POST | `/auth/login` | Login user |
 
 ### Events
 
@@ -205,8 +210,8 @@ Click **Authorize**, then close. You can now access protected endpoints.
 |--------|----------|-------------|
 | GET | `/events` | Get all events  |
 | GET | `/events/me` | Get my events |
-| GET | `/events/{eventId}` | Get event by ID |
-| POST | `/events` | Create new event |
+| GET | `/events/{eventId}` | Get event |
+| POST | `/events` | Create event |
 | PATCH | `/events/{eventId}` | Update event |
 | DELETE | `/events/{eventId}` | Delete event |
 
@@ -215,14 +220,14 @@ Click **Authorize**, then close. You can now access protected endpoints.
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/venues` | Get all venues |
-| GET | `/venues/{venueId}` | Get venue by ID |
+| GET | `/venues/{venueId}` | Get venue |
 | POST | `/venues` | Create venue |
 
 ### Tickets
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/events/{eventId}/tickets` | Get all tickets for event |
+| GET | `/events/{eventId}/tickets` | Get event tickets |
 | GET | `/events/{eventId}/tickets/available` | Get available tickets |
 | POST | `/tickets` | Generate ticket |
 
@@ -231,7 +236,7 @@ Click **Authorize**, then close. You can now access protected endpoints.
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/bookings` | Get my bookings |
-| GET | `/bookings/{bookingId}` | Get booking by ID |
+| GET | `/bookings/{bookingId}` | Get booking |
 | POST | `/bookings` | Create booking |
 | DELETE | `/bookings/{bookingId}` | Cancel booking |
 
@@ -246,55 +251,35 @@ Click **Authorize**, then close. You can now access protected endpoints.
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/users/me` | Get my profile |
+| GET | `/users/me` | Get profile |
 | GET | `/users/me/bookings` | Get my bookings |
 | PUT | `/users/me` | Update my profile |
-| PUT | `/users/{userId}` | Update user profile |
+| PUT | `/users/{userId}` | Update user profile (ADMIN)|
 
 ---
 
 ## Testing
 
-This project includes comprehensive **unit tests for the service layer**, ensuring that all core business logic is thoroughly validated.
+This project includes unit tests for **service layer logic** using:
 
-### Testing Approach
-- **JUnit 5** for test structure
-- **Mockito** for mocking dependencies
-- Focus on **business logic validation**, not just method execution.
-- Covers both **success and failure scenarios**
+- JUnit 5 for test structure
+- Mockito for mocking dependencies
 
 ### Test Coverage
 
-All major service classes are fully tested:
+All major service classes are fully tested (**both success and failure cases**):
 
-- **BookingService**
-  - Booking creation
-  - Ticket validation
-  - Booking cancellation
-  - Ownership checks
+**1) BookingServiceTest** - Covers booking lifecycle logic and validation rules.
 
-- **EventService**
-  - Event creation and updates
-  - Venue validation
-  - Capacity constraints
-  - Authorization (organizer/admin)
+**2) EventServiceTest** - Covers event management rules, capacity constraints, and authorization logic.
 
-- **PaymentService**
-  - Successful payment processing
-  - Payment failure scenarios (wrong amount)
-  - Booking ownership validation
-  - Payment status transitions (`PENDING → PAID / FAILED`)
+**3) PaymentServiceTest** - Covers payment processing, validation, and status transitions.
 
-- **TicketService**
-  - Ticket generation
-  - Event ownership validation
-  - Viewing available tickets
+**4) TicketServiceTest** - Covers ticket generation and availability logic
 
-- **VenueService**
-  - Venue creation
-  - Venue retrieval
-  - Authorization checks
-### Running Tests
+**5) VenueServiceTest** - Covers venue management and access control rules
+    
+### Run Tests
 
 Run all tests using Maven:
 
