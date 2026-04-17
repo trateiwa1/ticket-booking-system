@@ -1,4 +1,5 @@
 # Ticket Booking System REST API
+A backend REST API for managing events, tickets, bookings, payments, and venues with JWT-based authentication and PostgreSQL persistence.
 ## Table of Contents
 
 - Features
@@ -7,7 +8,9 @@
 
 - Project Architecture
 
-- Getting Started (Run locally/Docker)
+- Database
+
+- Getting Started (Run locally / Docker)
 
 - API Documentation
 
@@ -37,7 +40,7 @@
 
 - API Documentation (Interactive Swagger UI for testing)
 
-- Docker Support (Containerized deployment)
+- Docker support for PostgreSQL database
 
 ---
 
@@ -91,12 +94,23 @@ src/test/java/com/example/ticketbookingsystem/
 
 ---
 
+## Database
+
+The primary database used in this project is **PostgreSQL 16**.
+
+- Runs in a Docker container
+- Persistent storage 
+- Automatically managed schema using Hibernate (JPA)
+- Supports production-like environment setup
+
+---
+
 ## Getting Started
 
 ### Prerequisites
 - Java 21+
 - Maven
-- Docker (Optional for PostgreSQL)
+- Docker 
 
 1. Clone the repository and change the directory
 ```
@@ -117,12 +131,14 @@ mvn clean install
  
 mvn spring-boot:run
 ```
-
-> Application will run at:
+Application URL
+```
 http://localhost:8080
-
-> Note: This is a backend REST API - Use Swagger UI to access and test endpoints when the application is running: http://localhost:8080/swagger-ui/index.html
-
+```
+Note: This is a backend REST API - Use Swagger UI to access and test endpoints when the application is running: 
+```
+http://localhost:8080/swagger-ui/index.html
+```
 ## API Documentation
 
 Once running, access:
