@@ -113,14 +113,14 @@ The primary database used in this project is **PostgreSQL 16**.
 - Maven
 - Docker
 
-**A) Run the application with Docker**
-
-Clone the repository and change the directory
+1) Clone the repository and change the directory
 ```
 git clone https://github.com/trateiwa1/ticket-booking-system.git  
 
 cd ticket-booking-system
 ```
+
+**A) Run the application with Docker**
 
 Start PostgreSQL (Docker)
 ```
