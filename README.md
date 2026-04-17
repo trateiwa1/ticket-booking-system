@@ -10,7 +10,7 @@ A backend REST API for managing events, tickets, bookings, payments, and venues 
 
 - Database
 
-- Getting Started (Run locally / Docker)
+- Getting Started (Run with Docker/Locally)
 
 - API Documentation
 
@@ -120,7 +120,7 @@ git clone https://github.com/trateiwa1/ticket-booking-system.git
 cd ticket-booking-system
 ```
 
-**A) Run the application with Docker**
+**Option A) Run the application with Docker**
 
 Start PostgreSQL (Docker)
 ```
@@ -130,7 +130,7 @@ docker run --name postgres-db \
 -p 5432:5432 \
 -d postgres:16
 ```
-**B) Run the application locally**
+**Option B) Run the application locally**
 ```
 mvn clean install
  
