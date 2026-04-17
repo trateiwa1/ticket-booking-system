@@ -123,7 +123,11 @@ cd ticket-booking-system
 
 Start PostgreSQL (Docker)
 ```
-docker run --name postgres-db -e POSTGRES_PASSWORD="Password&123" -e POSTGRES_DB=ticket_booking_db -p 5432:5432 -d postgres:16
+docker run --name postgres-db \
+-e POSTGRES_PASSWORD="Password&123" \
+-e POSTGRES_DB=ticket_booking_db \
+-p 5432:5432 \
+-d postgres:16
 ```
 **B) Run the application locally**
 ```
