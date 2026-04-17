@@ -107,7 +107,7 @@ The primary database used in this project is **PostgreSQL 16**.
 
 ## Getting Started
 
-### Prerequisites
+### Requirements
 - Java 21+
 - Maven
 - Docker 
@@ -144,14 +144,12 @@ http://localhost:8080/swagger-ui/index.html
 Once running, access:
 
 - Swagger UI: http://localhost:8080/swagger-ui/index.html  
-- API Docs: http://localhost:8080/api-docs  
-
-> The application uses PostgreSQL for data persistence.
-
+- API Docs: http://localhost:8080/api-docs
+  
 ---
 
 ## Authentication
-All endpoints except /auth/register and /auth/login require a JWT token.
+All endpoints except ```/auth/register``` and ```/auth/login``` require a JWT token.
 
 ### Register a new user
 ```
