@@ -59,6 +59,7 @@ A backend REST API for managing events, tickets, bookings, payments, and venues 
 | Maven            | Build tool |
 | Swagger/OpenAPI  | API documentation |
 
+
 ---
 
 
